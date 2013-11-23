@@ -79,10 +79,9 @@ TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
                         -fomit-frame-pointer \
                         -fno-strict-aliasing
-endif
 
-ifeq ($(TARGET_USE_O_LEVEL_2),true)
-TARGET_arm_CFLAGS :=    -O2 \
+else ifeq ($(TARGET_USE_O_LEVEL_2),true)
+TARGET_arm_CFLAGS :=    -O3 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -funswitch-loops
@@ -103,10 +102,9 @@ TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
                         -fomit-frame-pointer \
                         -fno-strict-aliasing
-endif
 
-ifeq ($(TARGET_USE_O_LEVEL_3),true)
-TARGET_arm_CFLAGS :=    -O3 \
+else
+TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -funswitch-loops
@@ -116,6 +114,7 @@ TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
                         -fomit-frame-pointer \
                         -fno-strict-aliasing
+
 endif
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
