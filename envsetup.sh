@@ -16,8 +16,19 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 - jgrep:   Greps on all local Java files.
 - resgrep: Greps on all local res/*.xml files.
 - godir:   Go to the directory containing a file.
-- mka:      Builds using SCHED_BATCH on all processors
-- reposync: Parallel repo sync using ionice and SCHED_BATCH
+- cmremote: Add git remote for CM Gerrit Review.
+- cmgerrit: A Git wrapper that fetches/pushes patch from/to CM Gerrit Review.
+- cmrebase: Rebase a Gerrit change and push it again.
+- aospremote: Add git remote for matching AOSP repository.
+- cafremote: Add git remote for matching CodeAurora repository.
+- mka:      Builds using SCHED_BATCH on all processors.
+- mkap:     Builds the module(s) using mka and pushes them to the device.
+- cmka:     Cleans and builds using mka.
+- repolastsync: Prints date and time of last repo sync.
+- reposync: Parallel repo sync using ionice and SCHED_BATCH.
+- repopick: Utility to fetch changes from Gerrit.
+- installboot: Installs a boot.img to the connected device.
+- installrecovery: Installs a recovery.img to the connected device.
 
 Look at the source to view more functions. The complete list is:
 EOF
@@ -1440,6 +1451,33 @@ function mka() {
             schedtool -B -n 1 -e ionice -n 1 make -j `cat /proc/cpuinfo | grep "^processor" | wc -l` "$@"
             ;;
     esac
+}
+
+function cmka() {
+    if [ ! -z "$1" ]; then
+        for i in "$@"; do
+            case $i in
+                bacon|otapackage|systemimage)
+                    mka installclean
+                    mka $i
+                    ;;
+                *)
+                    mka clean-$i
+                    mka $i
+                    ;;
+            esac
+        done
+    else
+        mka clean
+        mka
+    fi
+}
+
+function repolastsync() {
+    RLSPATH="$ANDROID_BUILD_TOP/.repo/.repopickle_fetchtimes"
+    RLSLOCAL=$(date -d "$(stat -c %z $RLSPATH)" +"%e %b %Y, %T %Z")
+    RLSUTC=$(date -d "$(stat -c %z $RLSPATH)" -u +"%e %b %Y, %T %Z")
+    echo "Last repo sync: $RLSLOCAL / $RLSUTC"
 }
 
 function reposync() {
