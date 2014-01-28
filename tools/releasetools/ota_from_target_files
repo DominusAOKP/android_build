@@ -377,7 +377,10 @@ def SignOutput(temp_zip_name, output_zip_name):
 
 def AppendAssertions(script, info_dict):
   if OPTIONS.override_device == "auto":
-    device = GetBuildProp("ro.product.device", info_dict)
+    if OPTIONS.override_prop == "false":
+      device = GetBuildProp("ro.product.device", info_dict)
+    else:
+      device = GetBuildProp("ro.build.product", info_dict)
   else:
     device = OPTIONS.override_device
   script.AssertDevice(device)
