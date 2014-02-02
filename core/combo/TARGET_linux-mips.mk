@@ -68,25 +68,10 @@ endif
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-ifeq ($(TARGET_USE_O_LEVEL_S),true)
-TARGET_mips_CFLAGS :=    -Os \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing    \
-                        -funswitch-loops
-
-else ifeq ($(TARGET_USE_O_LEVEL_3),true)
-TARGET_mips_CFLAGS :=    -O3 \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing    \
-                        -funswitch-loops
-
-else
-TARGET_mips_CFLAGS :=    -O2 \
-                        -fomit-frame-pointer \
-                        -fstrict-aliasing    \
-                        -funswitch-loops
-
-endif
+TARGET_mips_CFLAGS :=	-O2 \
+			-fomit-frame-pointer \
+			-fno-strict-aliasing    \
+			-funswitch-loops
 
 # Set FORCE_MIPS_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to gdb debugging easier.
