@@ -186,7 +186,7 @@ def add_to_manifest(repositories):
     raw_xml = ElementTree.tostring(lm)
     raw_xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + raw_xml
 
-    f = open('.repo/local_manifests/ValidusAOSP_manifest.xml', 'w')
+    f = open('.repo/local_manifests/Validus_manifest.xml', 'w')
     f.write(raw_xml)
     f.close()
 
