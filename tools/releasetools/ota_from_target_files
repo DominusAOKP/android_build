@@ -901,7 +901,6 @@ def main(argv):
       OPTIONS.override_device = a
     elif o in ("--override_prop"):
       OPTIONS.override_prop = bool(a.lower() == 'true')
->>>>>>> 361c44bc0abd5102393ade9fb2a60638227023b8
     else:
       return False
     return True
