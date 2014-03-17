@@ -74,12 +74,12 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^gzr_") ; then
-       GZR_BUILD=$(echo -n $1 | sed -e 's/^gzr_//g')
+    if (echo -n $1 | grep -q -e "^dominus_") ; then
+       DOMINUS_BUILD=$(echo -n $1 | sed -e 's/^dominus_//g')
     else
-       GZR_BUILD=
+       DOMINUS_BUILD=
     fi
-    export GZR_BUILD
+    export DOMINUS_BUILD
 
     CALLED_FROM_SETUP=true BUILD_SYSTEM=build/core \
         TARGET_PRODUCT=$1 \
@@ -501,7 +501,7 @@ function breakfast()
     CM_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
     add_lunch_combo full-eng
-    for f in `/bin/ls vendor/gzr/vendorsetup.sh 2> /dev/null`
+    for f in `/bin/ls vendor/dominus/vendorsetup.sh 2> /dev/null`
         do
 echo "including $f"
             . $f
@@ -518,7 +518,7 @@ echo "z$target" | grep -q "-"
             lunch $target
         else
             # This is probably just the Validus model name
-            lunch gzr_$target-userdebug
+            lunch dominus_$target-userdebug
         fi
 fi
 return $?
@@ -565,7 +565,7 @@ function lunch()
     check_product $product
     if [ $? -ne 0 ]
     then
-        # if we can't find a product, try to grab it off the GZRoms github
+        # if we can't find a product, try to grab it off the Dominus github
         T=$(gettop)
         pushd $T > /dev/null
         build/tools/roomservice.py $product

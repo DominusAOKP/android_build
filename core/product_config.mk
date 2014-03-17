@@ -184,8 +184,8 @@ ifneq ($(strip $(TARGET_BUILD_APPS)),)
 all_product_configs := $(call get-product-makefiles,\
     $(SRC_TARGET_DIR)/product/AndroidProducts.mk)
 else
-  ifneq ($(GZR_BUILD),)
-    all_product_configs := $(shell ls device/*/$(GZR_BUILD)/gzr.mk)
+  ifneq ($(DOMINUS_BUILD),)
+    all_product_configs := $(shell ls device/*/$(DOMINUS_BUILD)/dominus.mk)
   else
     # Read in all of the product definitions specified by the AndroidProducts.mk
     # files in the tree.
@@ -193,7 +193,7 @@ else
   endif
 endif
 
-ifeq ($(GZR_BUILD),)
+ifeq ($(DOMINUS_BUILD),)
 # Find the product config makefile for the current product.
 # all_product_configs consists items like:
 # <product_name>:<path_to_the_product_makefile>

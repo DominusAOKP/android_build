@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Copyright (C) 2012 The CyanogenMod Project
-# Copyright (C) 2013/2014 GZRoms Project
+# Copyright (C) 2013/2014 Dominus Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,13 +34,13 @@ except:
     device = product
 
 if not depsonly:
-    print "Device %s not found. Attempting to retrieve device repository from GZRoms Github (http://github.com/ValidusAOSP)." % device
+    print "Device %s not found. Attempting to retrieve device repository from Dominus Github (http://github.com/DominusAOKP)." % device
 
 repositories = []
 
 page = 1
 while not depsonly:
-    result = json.loads(urllib2.urlopen("https://api.github.com/users/ValidusAOSP/repos?page=%d" % page).read())
+    result = json.loads(urllib2.urlopen("https://api.github.com/users/DominusAOKP/repos?page=%d" % page).read())
     if len(result) == 0:
         break
     for res in result:
@@ -80,7 +80,7 @@ def indent(elem, level=0):
 
 def get_from_manifest(devicename):
     try:
-        lm = ElementTree.parse(".repo/local_manifests/Validus_manifest.xml")
+        lm = ElementTree.parse(".repo/local_manifests/dominus_manifest.xml")
         lm = lm.getroot()
     except:
         lm = ElementTree.Element("manifest")
@@ -104,7 +104,7 @@ def get_from_manifest(devicename):
 
 def is_in_manifest(projectname, branch):
     try:
-        lm = ElementTree.parse(".repo/local_manifests/Validus_manifest.xml")
+        lm = ElementTree.parse(".repo/local_manifests/dominus_manifest.xml")
         lm = lm.getroot()
     except:
         lm = ElementTree.Element("manifest")
@@ -117,7 +117,7 @@ def is_in_manifest(projectname, branch):
 
 def add_to_manifest_dependencies(repositories):
     try:
-        lm = ElementTree.parse(".repo/local_manifests/Validus_manifest.xml")
+        lm = ElementTree.parse(".repo/local_manifests/dominus_manifest.xml")
         lm = lm.getroot()
     except:
         lm = ElementTree.Element("manifest")
@@ -131,7 +131,7 @@ def add_to_manifest_dependencies(repositories):
                 print 'Updating dependency %s' % (repo_name)
                 existing_project.set('name', repository['repository'])
             if existing_project.attrib['revision'] == repository['branch']:
-                print 'ValidusAOSP/%s already exists' % (repo_name)
+                print 'DominusAOKP/%s already exists' % (repo_name)
             else:
                 print 'updating branch for %s to %s' % (repo_name, repository['branch'])
                 existing_project.set('revision', repository['branch'])
@@ -139,7 +139,7 @@ def add_to_manifest_dependencies(repositories):
 
         print 'Adding dependency: %s -> %s' % (repo_name, repo_target)
         project = ElementTree.Element("project", attrib = { "path": repo_target,
-            "remote": "github", "name": repo_name, "revision": "kk4.4" })
+            "remote": "github", "name": repo_name, "revision": "kitkat" })
 
         if 'branch' in repository:
             project.set('revision',repository['branch'])
@@ -150,13 +150,13 @@ def add_to_manifest_dependencies(repositories):
     raw_xml = ElementTree.tostring(lm)
     raw_xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + raw_xml
 
-    f = open('.repo/local_manifests/Validus_manifest.xml', 'w')
+    f = open('.repo/local_manifests/dominus_manifest.xml', 'w')
     f.write(raw_xml)
     f.close()
 
 def add_to_manifest(repositories):
     try:
-        lm = ElementTree.parse(".repo/local_manifests/Validus_manifest.xml")
+        lm = ElementTree.parse(".repo/local_manifests/dominus_manifest.xml")
         lm = lm.getroot()
     except:
         lm = ElementTree.Element("manifest")
@@ -167,15 +167,15 @@ def add_to_manifest(repositories):
         existing_project = exists_in_tree_device(lm, repo_name)
         if existing_project != None:
             if existing_project.attrib['revision'] == repository['branch']:
-                print 'ValidusAOSP/%s already exists' % (repo_name)
+                print 'DominusAOKP/%s already exists' % (repo_name)
             else:
-                print 'updating branch for ValidusAOSP/%s to %s' % (repo_name, repository['branch'])
+                print 'updating branch for DominusAOKP/%s to %s' % (repo_name, repository['branch'])
                 existing_project.set('revision', repository['branch'])
             continue
 
-        print 'Adding dependency: ValidusAOSP/%s -> %s' % (repo_name, repo_target)
+        print 'Adding dependency: DominusAOKP/%s -> %s' % (repo_name, repo_target)
         project = ElementTree.Element("project", attrib = { "path": repo_target,
-            "remote": "github", "name": "ValidusAOSP/%s" % repo_name, "revision": "kk4.4" })
+            "remote": "github", "name": "DominusAOKP/%s" % repo_name, "revision": "kitkat" })
 
         if 'branch' in repository:
             project.set('revision', repository['branch'])
@@ -186,7 +186,7 @@ def add_to_manifest(repositories):
     raw_xml = ElementTree.tostring(lm)
     raw_xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + raw_xml
 
-    f = open('.repo/local_manifests/Validus_manifest.xml', 'w')
+    f = open('.repo/local_manifests/dominus_manifest.xml', 'w')
     f.write(raw_xml)
     f.close()
 
@@ -235,7 +235,7 @@ else:
 
             repo_path = "device/%s/%s" % (manufacturer, device)
 
-            add_to_manifest([{'repository':repo_name,'target_path':repo_path,'branch':'vaosp'}])
+            add_to_manifest([{'repository':repo_name,'target_path':repo_path,'branch':'gzokp'}])
 
             print "Syncing repository to retrieve project."
             os.system('repo sync %s' % repo_path)
@@ -245,4 +245,4 @@ else:
             print "Done"
             sys.exit()
 
-print "Repository for %s not found in the GZRoms Github repository list. If this is in error, you may need to manually add it to .repo/local_manifests/Validus_manifest.xml" % device
+print "Repository for %s not found in the GZRoms Github repository list. If this is in error, you may need to manually add it to .repo/local_manifests/dominus_manifest.xml" % device
